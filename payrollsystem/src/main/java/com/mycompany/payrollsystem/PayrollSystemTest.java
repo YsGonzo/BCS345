@@ -8,12 +8,14 @@ public class PayrollSystemTest {
        Date emp2 = new Date(4,19,2000);
        Date emp3 = new Date(9,20,2002);
        Date emp4 = new Date(8,21,2003);
+       Date emp5 = new Date(10,18,2001);
        Date today = new Date(4,25,2023);
        
       // create subclass objects                                          
         SalariedEmployee salariedEmployee =                                 
          new SalariedEmployee("John", "Smith", "111-11-1111", emp1, 800.00);
-        
+        SalariedEmployee salariedEmployee2 =                                 
+         new SalariedEmployee("Jayson", "Gonzalez", "555-55-5555", emp5, 500.00);
       HourlyEmployee hourlyEmployee =                                     
          new HourlyEmployee("Karen", "Price", "222-22-2222", emp2, 16.75, 40);  
       CommissionEmployee commissionEmployee =                             
@@ -22,39 +24,37 @@ public class PayrollSystemTest {
          new BasePlusCommissionEmployee("Bob", "Lewis", "444-44-4444", emp4, 5000, .04, 300);
 
       // create four-element Employee array
-      Employee[] employees = new Employee[4]; 
+      Employee[] employees = new Employee[5]; 
 
       // initialize array with Employees        
       employees[0] = salariedEmployee;          
       employees[1] = hourlyEmployee;            
       employees[2] = commissionEmployee;        
       employees[3] = basePlusCommissionEmployee;
+      employees[4] = salariedEmployee2;
         System.out.printf("Today's Date: " + today + "%n");
       System.out.printf("Employees processed polymorphically:%n%n");
 
       // generically process each element in array employees
       for (Employee currentEmployee : employees) {
-         System.out.println(currentEmployee); // invokes toString
+         if(currentEmployee.earnings() <= 600){
+            System.out.println(currentEmployee); // invokes toString
          
          // determine whether element is a BasePlusCommissionEmployee
-         if (currentEmployee instanceof BasePlusCommissionEmployee) {
-            // downcast Employee reference to 
-            // BasePlusCommissionEmployee reference
-            BasePlusCommissionEmployee employee = 
-               (BasePlusCommissionEmployee) currentEmployee;
+            if (currentEmployee instanceof BasePlusCommissionEmployee) {
+                // downcast Employee reference to 
+                // BasePlusCommissionEmployee reference
+                BasePlusCommissionEmployee employee = 
+                   (BasePlusCommissionEmployee) currentEmployee;
 
-            employee.setBaseSalary(1.10 * employee.getBaseSalary());
+                employee.setBaseSalary(1.10 * employee.getBaseSalary());
 
-            System.out.printf(
-               "new base salary with 10%% increase is: $%,.2f%n",
-               employee.getBaseSalary());
-         } 
-         if(currentEmployee.birthDate.getMonth() == today.getMonth()){
-            System.out.printf("earned (happy birthday!) $%,.2f%n%n", currentEmployee.earnings()+100);
-         }
-         else{
+                System.out.printf(
+                   "new base salary with 10%% increase is: $%,.2f%n%n",
+                   employee.getBaseSalary());
+            }
             System.out.printf("earned $%,.2f%n%n", currentEmployee.earnings());
-         }
+        }
       } 
 
       // get type name of each object in employees array
